@@ -1,44 +1,58 @@
 let obj;
 let view;
 let oldMousePos;
+let realMouseX;
+let realMouseY;
 
 // TODO: fix mouse paralax
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
-    obj = new Node(createVector(width/2, height/2));
+    obj = new Node();
     view = {
         zoom: 1,
         pos: createVector(0,0),
     };
-    oldMousePos = createVector(mouseX, mouseY);
+    oldMousePos = createVector(0,0);
 }
 
 function draw() {
+    fixMouse();
     push();
-    translate(width/2, height/2);
+    translate(view.pos.x, view.pos.y);
     scale(view.zoom);
-    translate(view.pos.x - width/2, view.pos.y - height/2);
+    //translate(-1 * (realMouseX / view.zoom), -realMouseY / view.zoom);
+    //translate((view.pos.x - (realMouseX)) / view.zoom, (view.pos.y - (realMouseY)) / view.zoom);
     background(255);
     if (mouseIsPressed){
-        view.pos.sub(oldMousePos.sub(createVector(mouseX, mouseY)));
-        oldMousePos = createVector(mouseX, mouseY);
+        view.pos.sub(oldMousePos.sub(createVector(realMouseX, realMouseY)));
+        oldMousePos = createVector(realMouseX, realMouseY);
     }
     obj.tick();
     obj.show();
     pop();
 }
 
+function fixMouse() {
+    realMouseX = mouseX / view.zoom;
+    realMouseY = mouseY / view.zoom;
+}
+
 function mousePressed(e) {
-    oldMousePos = createVector(mouseX, mouseY);
+    oldMousePos = createVector(realMouseX, realMouseY);
 }
 
 function mouseWheel(e) {
+    let oldZoom = view.zoom;
     if (e.delta < 0){
-        view.zoom += view.zoom / 10;
+        view.zoom += view.zoom / 100;
     } else {
-        view.zoom -= view.zoom / 10;
+        view.zoom -= view.zoom / 100;
     }
+    view.pos = createVector(
+        view.pos.x - (mouseX / width * (width / view.zoom - width / oldZoom)),
+        view.pos.y - (mouseY / height * (height / view.zoom - height / oldZoom))
+    );
 }
 
 
