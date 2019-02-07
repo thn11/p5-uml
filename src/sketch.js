@@ -49,10 +49,14 @@ function mouseWheel(e) {
     } else {
         view.zoom -= view.zoom / 100;
     }
+    deltaX =  (width / oldZoom) - (width / view.zoom);
+    deltaY =  (height / oldZoom) - (height / view.zoom);
     view.pos = createVector(
-        view.pos.x - (mouseX / width * (width / view.zoom - width / oldZoom)),
-        view.pos.y - (mouseY / height * (height / view.zoom - height / oldZoom))
+        view.pos.x + map(mouseX, 0, width, 0, deltaX),
+        view.pos.y + map(mouseY, 0, width, 0, deltaY)
     );
+
+    console.log(view.zoom);
 }
 
 
