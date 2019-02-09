@@ -4,11 +4,13 @@ let oldMousePos;
 let realMouseX;
 let realMouseY;
 
+let oldZoom;
+
 // TODO: fix mouse paralax
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
-  obj = new Node(createVector(0, 0));
+  obj = new Node();
   view = {
     zoom: 1,
     pos: createVector(0, 0),
@@ -21,16 +23,23 @@ function draw() {
   push();
   translate(view.pos.x, view.pos.y);
   scale(view.zoom);
-  background(255);
+  background(51);
 
   let worldMouse = createVector(
     (mouseX - view.pos.x) / view.zoom,
     (mouseY - view.pos.y) / view.zoom
   );
 
+  let oldWorldMouse = createVector(
+    mouseX / oldZoom - view.pos.x / oldZoom, // divide by zoom to stop paralax?
+    mouseY / oldZoom - view.pos.y / oldZoom
+  );
+
   strokeWeight(8);
   stroke(255, 128, 0);
   point(worldMouse.x, worldMouse.y);
+  stroke(128, 255, 0);
+  point(oldWorldMouse.x, oldWorldMouse.y);
   strokeWeight(1);
 
   if (mouseIsPressed) {
@@ -59,7 +68,7 @@ function mousePressed(e) {
 
 function mouseWheel(e) {
   console.log(view.pos);
-  let oldZoom = view.zoom;
+  oldZoom = view.zoom;
   if (e.delta < 0) {
     view.zoom += view.zoom / 100;
   } else {
@@ -70,45 +79,16 @@ function mouseWheel(e) {
   // and subtract mouse position in new view
   // then subtract or add that to the position
 
-  let oldMouseX = mouseX / oldZoom;
-  let oldMouseY = mouseY / oldZoom;
+  let oldMouseX = mouseX / oldZoom - view.pos.x / view.zoom;
+  let oldMouseY = mouseY / oldZoom - view.pos.y / view.zoom;
 
-  let newMouseX = mouseX / view.zoom;
-  let newMouseY = mouseY / view.zoom;
+  let newMouseX = (mouseX - view.pos.x) / view.zoom;
+  let newMouseY = (mouseY - view.pos.y) / view.zoom;
 
-  let deltaX = newMouseX - oldMouseX;
-  let deltaY = newMouseY - oldMouseY;
+  let deltaX = oldMouseX - newMouseX;
+  let deltaY = oldMouseY - newMouseY;
 
-  console.log({
-    oldMouseX,
-    oldMouseY,
-    newMouseX,
-    newMouseY,
-    deltaX,
-    deltaY
-  });
-
-  //view.pos.add(deltaX, deltaY);
-
-  let viewWidth = width / view.zoom;
-  let viewHeight = height / view.zoom;
-
-  let mouse_true = createVector(mouseX / view.zoom + width, mouseY / view.zoom + height);
-  let mouse_relative = createVector(viewWidth / mouseX, viewHeight / mouseY);
-  let newPosX = mouse_true.x - viewWidth / mouse_relative.x;
-  let newPosY = mouse_true.y - viewHeight / mouse_relative.y;
-
-  //view.pos.lerp(createVector(width / 2 - mouseX, height / 2 - mouseY), 0.3);
-  console.log(view.pos);
-
-  // deltaX = (width / oldZoom) - (width / view.zoom);
-  // deltaY = (height / oldZoom) - (height / view.zoom);
-  // view.pos = createVector(
-  //   view.pos.x + map(mouseX, 0, width, 0, deltaX),
-  //   view.pos.y + map(mouseY, 0, width, 0, deltaY)
-  // );
-
-  console.log(view.zoom);
+  view.pos.sub(deltaX, deltaY);
 }
 
 
