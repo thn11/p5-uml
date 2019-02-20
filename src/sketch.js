@@ -5,17 +5,23 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   obj = new Node();
   view = new View();
+  //frameRate(2);
 }
 
 function draw() {
   view.tick();
   push();
+  scale(view.zoom);
   translate(view.pos.x, view.pos.y);
-  scale(view.zoomLevel);
   background(51);
   obj.tick();
   obj.show();
   drawDots();
+  strokeWeight(5);
+  stroke(255, 128, 0);
+  point(view.worldMouse.x, view.worldMouse.y);
+  strokeWeight(1);
+  stroke(0);
   pop();
 }
 
@@ -43,5 +49,5 @@ function mousePressed(e) {
 }
 
 function mouseWheel(e) {
-  view.zoom(e.delta < 0 ? 1 : -1);
+  view.zoom = e.delta < 0 ? 1 : -1;
 }
