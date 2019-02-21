@@ -16,7 +16,7 @@ class Node {
   }
 
   show() {
-    //stroke(0);
+    stroke(0);
     noFill();
     rect(this.realPos.x, this.realPos.y, 50, 50);
   }

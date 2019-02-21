@@ -6,8 +6,19 @@ class View {
     this.zoomLevel = 1;
     this.realMousePos = createVector(0, 0);
     this.worldMouse = createVector(0, 0);
+    this.mouseDelta = createVector(0,0);
     this.mousePos = createVector(0, 0);
     this.dragEnabled = false;
+  }
+
+  apply() {
+      scale(view.zoom);
+      translate(view.pos.x, view.pos.y);
+  }
+
+  unapply() {
+      translate(-view.pos.x, -view.pos.y);
+      scale(-view.zoom);
   }
 
 
@@ -27,6 +38,7 @@ class View {
    * delta (int) - negative number for zoom out, positive for zoom in
    */
   set zoom(delta) {
+      // TODO: limit zoom
       if (!this.dragEnabled){
         const oldZoom = this.zoomLevel;
         if (delta !== undefined) {
@@ -43,7 +55,9 @@ class View {
           mouseY / this.zoom - this.pos.y
         );
 
-        this.pos = this.pos.sub(currentMousePos.sub(newMousePos));
+        this.mouseDelta = currentMousePos.sub(newMousePos);
+
+        this.pos = this.pos.sub(this.mouseDelta);
     }
   }
 

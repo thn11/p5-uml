@@ -11,13 +11,12 @@ function setup() {
 function draw() {
   view.tick();
   push();
-  scale(view.zoom);
-  translate(view.pos.x, view.pos.y);
+  view.apply();
   background(51);
+  grid();
   obj.tick();
   obj.show();
-  drawDots();
-  strokeWeight(5);
+  strokeWeight(3);
   stroke(255, 128, 0);
   point(view.worldMouse.x, view.worldMouse.y);
   strokeWeight(1);
@@ -25,17 +24,19 @@ function draw() {
   pop();
 }
 
-function drawDots() {
-  colorMode(HSB, 100);
-  strokeWeight(4);
-  for (let i = 0; i < 60; i++) {
-    for (let j = 0; j < 30; j++) {
-      stroke(map(i, 0, 60, 0, 100), map(j, 0, 30, 50, 100), 100);
-      point(i * 20, j * 20);
+function grid() {
+    stroke(255,128,0, 80);
+    const squareSize = ceil((50 / view.zoom) / 50) * 50;
+    strokeWeight(squareSize / 50);
+    console.log(squareSize);
+    for (let i = 0; i <= view.width + squareSize; i+= squareSize){
+        let x = floor((i - view.pos.x)/squareSize) * squareSize;
+        line(x, -view.pos.y, x, view.height - view.pos.y);
     }
-  }
-  colorMode(RGB);
-  strokeWeight(1);
+    for (let j = 0; j <= view.height + squareSize; j+= squareSize){
+        let y = floor((j - view.pos.y)/squareSize) * squareSize;
+        line(-view.pos.x, y, view.width - view.pos.x, y);
+    }
 }
 
 function fixMouse() {
