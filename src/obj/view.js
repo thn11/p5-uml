@@ -7,7 +7,7 @@ class View {
     this.realMousePos = createVector(0, 0);
     this.worldMouse = createVector(0, 0);
     this.mousePos = createVector(0, 0);
-    this.dragEnabled = true;
+    this.dragEnabled = false;
   }
 
 
@@ -27,23 +27,31 @@ class View {
    * delta (int) - negative number for zoom out, positive for zoom in
    */
   set zoom(delta) {
-    const oldZoom = this.zoomLevel;
-    if (delta !== undefined) {
-      this.zoomLevel += this.zoomLevel / (50 / delta);
+      if (!this.dragEnabled){
+        const oldZoom = this.zoomLevel;
+        if (delta !== undefined) {
+          this.zoomLevel += this.zoomLevel / (25 / delta);
+        }
+
+        let currentMousePos = createVector(
+          mouseX / oldZoom - this.pos.x,
+          mouseY / oldZoom - this.pos.y
+        );
+
+        let newMousePos = createVector(
+          mouseX / this.zoom - this.pos.x,
+          mouseY / this.zoom - this.pos.y
+        );
+
+        this.pos = this.pos.sub(currentMousePos.sub(newMousePos));
     }
-    let scaleDelta = this.zoomLevel - oldZoom;
-    let zoomDelta = createVector(
-      -((width * scaleDelta)),
-      -((height * scaleDelta))
-    )
-    //https://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
-    this.pos = this.pos.add(zoomDelta);
   }
 
   tick() {
+      // should run every loop
     this.worldMouse = createVector(
-      mouseX / view.zoom - view.pos.x,
-      mouseY / view.zoom - view.pos.y
+      mouseX / this.zoom - this.pos.x,
+      mouseY / this.zoom - this.pos.y
     );
 
     this.height = height / this.zoom;
@@ -57,12 +65,6 @@ class View {
       );
       this.pos = this.pos.sub(this.mousePos.sub(this.realMousePos));
       this.mousePos = this.realMousePos.copy();
-
-
-
-
-
-
     }
 
 

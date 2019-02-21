@@ -46,7 +46,13 @@ function fixMouse() {
 
 function mousePressed(e) {
   view.anchorMouse(mouseX, mouseY);
+  view.dragEnabled = true;
 }
+
+function mouseReleased(e) {
+  view.dragEnabled = false;
+}
+
 
 function mouseWheel(e) {
   view.zoom = e.delta < 0 ? 1 : -1;
