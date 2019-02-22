@@ -1,11 +1,11 @@
 let obj;
 let view;
+let canvas;
 
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeight);
+  canvas = createCanvas(window.innerWidth, window.innerHeight);
   obj = new Node();
   view = new View();
-  //frameRate(2);
 }
 
 function draw() {
@@ -26,9 +26,9 @@ function draw() {
 
 function grid() {
     stroke(255,128,0, 80);
-    const squareSize = ceil((50 / view.zoom) / 50) * 50;
-    strokeWeight(squareSize / 50);
-    console.log(squareSize);
+    const tempSize = ceil(sqrt(ceil((1 / view.zoom) / 1)));
+    const squareSize = pow(2, tempSize) * 50;
+    strokeWeight(2/view.zoom);
     for (let i = 0; i <= view.width + squareSize; i+= squareSize){
         let x = floor((i - view.pos.x)/squareSize) * squareSize;
         line(x, -view.pos.y, x, view.height - view.pos.y);
@@ -39,11 +39,7 @@ function grid() {
     }
 }
 
-function fixMouse() {
-  realMouseX = mouseX / view.zoom;
-  realMouseY = mouseY / view.zoom;
 
-}
 
 function mousePressed(e) {
   view.anchorMouse(mouseX, mouseY);
@@ -54,7 +50,13 @@ function mouseReleased(e) {
   view.dragEnabled = false;
 }
 
-
 function mouseWheel(e) {
   view.zoom = e.delta < 0 ? 1 : -1;
+  console.log(view.zoom);
+}
+
+window.onresize = function() {
+  canvas.size(window.innerWidth, window.innerHeight);
+  width = window.innerWidth;
+  height = window.innerHeight;
 }

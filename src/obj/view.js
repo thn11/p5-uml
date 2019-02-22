@@ -39,7 +39,14 @@ class View {
    */
   set zoom(delta) {
       // TODO: limit zoom
-      // something like 0.02 for min
+
+      if (delta < 0 && this.zoom < 0.05){
+          return null;
+      }
+      if (delta > 0 && this.zoom > 200){
+          return null;
+      }
+
       if (!this.dragEnabled){
         const oldZoom = this.zoomLevel;
         if (delta !== undefined) {
