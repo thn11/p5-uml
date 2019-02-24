@@ -1,4 +1,4 @@
-class Node {
+class Table {
 
 
   constructor(pos) {
