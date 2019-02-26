@@ -2,15 +2,14 @@ class Table {
 
 
   constructor(pos) {
-    this.pos = pos === undefined ? createVector(width / 2, height / 2) : pos;
+    this.pos = pos === undefined ? createVector(map(random(), 0, 1, 0, width), map(random(), 0, 1, 0, height)) : pos;
     this.realPos = this.pos.copy();
-    this.width = 50;
-    this.height = 80;
-    console.log(this.realPos);
+    this.width = 100;
+    this.height = 150;
   }
 
   setPos(pos) {
-    this.pos = pos;
+    this.pos = createVector(floor(pos.x), floor(pos.y));
   }
 
   posOver(pos) {
@@ -34,10 +33,14 @@ class Table {
   }
 
   show() {
-    stroke(0);
+    noStroke();
     strokeWeight(2);
-    noFill();
-    rect(this.realPos.x, this.realPos.y, this.width, this.height);
+    fill(20, 20, 20, 160);
+    rect(this.realPos.x, this.realPos.y, this.width, this.height, 5);
+    fill(255,128,0, 255);
+    rect(this.realPos.x, this.realPos.y, this.width, 20, 5, 5, 0);
+    fill(255);
+    text('users', this.realPos.x + 10, this.realPos.y + 5, this.width - 20, 20);
   }
 
 }

@@ -10,6 +10,7 @@ class Handler {
       if (this.tables[i].posOver(view.worldMouse)){
         this.dragging = this.tables[i];
         this.dragOffset = this.tables[i].getOffset(view.worldMouse);
+        this.tables = [this.dragging, ...this.tables.filter((a, b) => {console.log({a,b, i}); return b !== i;})];
         return true;
       }
     }
@@ -31,7 +32,7 @@ class Handler {
   }
 
   show() {
-    for (let i = 0; i < this.tables.length; i++) {
+    for (let i = this.tables.length - 1; i >= 0; i--) {
       this.tables[i].show();
     }
   }
