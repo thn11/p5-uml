@@ -1,11 +1,18 @@
 let canvas;
 let view;
 let handler;
+let font;
+
+function preload() {
+  font = loadFont('../assets/NotoMono-Regular.ttf');
+}
 
 function setup() {
   canvas = createCanvas(window.innerWidth, window.innerHeight);
   view = new View();
   handler = new Handler();
+  textFont(font);
+  textSize(12);
 }
 
 function draw() {

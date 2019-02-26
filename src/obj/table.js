@@ -13,8 +13,8 @@ class Table {
   }
 
   posOver(pos) {
-    if (pos.x <= this.realPos.x + this.width && pos.x >= this.realPos.x){
-      if (pos.y <= this.realPos.y + this.height && pos.y >= this.realPos.y){
+    if (pos.x <= this.realPos.x + this.width && pos.x >= this.realPos.x) {
+      if (pos.y <= this.realPos.y + this.height && pos.y >= this.realPos.y) {
         return true;
       }
     }
@@ -37,10 +37,10 @@ class Table {
     strokeWeight(2);
     fill(20, 20, 20, 160);
     rect(this.realPos.x, this.realPos.y, this.width, this.height, 5);
-    fill(255,128,0, 255);
-    rect(this.realPos.x, this.realPos.y, this.width, 20, 5, 5, 0);
+    fill(255, 128, 0, 255);
+    rect(this.realPos.x, this.realPos.y, this.width, 24, 5, 5, 0);
     fill(255);
-    text('users', this.realPos.x + 10, this.realPos.y + 5, this.width - 20, 20);
+    text('users', this.realPos.x + 10, this.realPos.y + 5, this.width - 20, 24);
   }
 
 }
