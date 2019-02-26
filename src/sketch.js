@@ -33,6 +33,7 @@ function mousePressed(e) {
 
 function mouseReleased(e) {
   view.dragEnabled = false;
+  handler.releaseDrag();
 }
 
 function mouseWheel(e) {

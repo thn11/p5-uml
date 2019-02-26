@@ -14,12 +14,19 @@ class Table {
   }
 
   posOver(pos) {
-    if (pos.x <= this.pos.x + width && pos.x >= this.pos.x){
-      if (pos.y <= this.pos.y + height && pos.y >= this.pos.y){
+    if (pos.x <= this.realPos.x + this.width && pos.x >= this.realPos.x){
+      if (pos.y <= this.realPos.y + this.height && pos.y >= this.realPos.y){
         return true;
       }
     }
     return false;
+  }
+
+  getOffset(pos) {
+    return createVector(
+      this.realPos.x - pos.x,
+      this.realPos.y - pos.y
+    )
   }
 
   tick() {
