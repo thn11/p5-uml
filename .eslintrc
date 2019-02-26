@@ -7,7 +7,7 @@
         }
     },
     "env": {
-        "es6": true 
+        "es6": true
         },
     "globals": {
       "setup": true,
@@ -179,7 +179,7 @@
         ////////// ECMAScript 6 //////////
 
         "no-var": 1,          // require let or const instead of var (off by default)
-        "generator-star": 1,  // enforce the position of the * in generator functions (off by default)
+        "generator-star-spacing": 1,  // enforce the position of the * in generator functions (off by default)
 
 
         ////////// Legacy //////////

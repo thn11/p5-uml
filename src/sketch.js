@@ -22,10 +22,12 @@ function draw() {
 
 
 function mousePressed(e) {
-  e.preventDefault();
-  if (!handler.draggable()) {
-    view.anchorMouse(mouseX, mouseY);
-    view.dragEnabled = true;
+  console.log(e);
+  if (e.button === 0) {
+    if (!handler.draggable()) {
+      view.anchorMouse(mouseX, mouseY);
+      view.dragEnabled = true;
+    }
   }
 }
 
@@ -34,6 +36,7 @@ function mouseReleased(e) {
 }
 
 function mouseWheel(e) {
+  e.preventDefault();
   view.zoom = e.delta < 0 ? 1 : -1;
   console.log(view.zoom);
 }

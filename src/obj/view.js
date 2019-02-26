@@ -6,19 +6,19 @@ class View {
     this.zoomLevel = 1;
     this.realMousePos = createVector(0, 0);
     this.worldMouse = createVector(0, 0);
-    this.mouseDelta = createVector(0,0);
+    this.mouseDelta = createVector(0, 0);
     this.mousePos = createVector(0, 0);
     this.dragEnabled = false;
   }
 
   apply() {
-      scale(view.zoom);
-      translate(view.pos.x, view.pos.y);
+    scale(view.zoom);
+    translate(view.pos.x, view.pos.y);
   }
 
   unapply() {
-      translate(-view.pos.x, -view.pos.y);
-      scale(-view.zoom);
+    translate(-view.pos.x, -view.pos.y);
+    scale(-view.zoom);
   }
 
 
@@ -38,39 +38,39 @@ class View {
    * delta (int) - negative number for zoom out, positive for zoom in
    */
   set zoom(delta) {
-      // TODO: limit zoom
+    // TODO: limit zoom
 
-      if (delta < 0 && this.zoom < 0.05){
-          return null;
+    if (delta < 0 && this.zoom < 0.05) {
+      return null;
+    }
+    if (delta > 0 && this.zoom > 200) {
+      return null;
+    }
+
+    if (!this.dragEnabled) {
+      const oldZoom = this.zoomLevel;
+      if (delta !== undefined) {
+        this.zoomLevel += this.zoomLevel / (25 / delta);
       }
-      if (delta > 0 && this.zoom > 200){
-          return null;
-      }
 
-      if (!this.dragEnabled){
-        const oldZoom = this.zoomLevel;
-        if (delta !== undefined) {
-          this.zoomLevel += this.zoomLevel / (25 / delta);
-        }
+      let currentMousePos = createVector(
+        mouseX / oldZoom - this.pos.x,
+        mouseY / oldZoom - this.pos.y
+      );
 
-        let currentMousePos = createVector(
-          mouseX / oldZoom - this.pos.x,
-          mouseY / oldZoom - this.pos.y
-        );
+      let newMousePos = createVector(
+        mouseX / this.zoom - this.pos.x,
+        mouseY / this.zoom - this.pos.y
+      );
 
-        let newMousePos = createVector(
-          mouseX / this.zoom - this.pos.x,
-          mouseY / this.zoom - this.pos.y
-        );
+      this.mouseDelta = currentMousePos.sub(newMousePos);
 
-        this.mouseDelta = currentMousePos.sub(newMousePos);
-
-        this.pos = this.pos.sub(this.mouseDelta);
+      this.pos = this.pos.sub(this.mouseDelta);
     }
   }
 
   tick() {
-      // should run every loop
+    // should run every loop
     this.worldMouse = createVector(
       mouseX / this.zoom - this.pos.x,
       mouseY / this.zoom - this.pos.y
