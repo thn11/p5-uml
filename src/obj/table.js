@@ -34,7 +34,6 @@ class Table {
 
   show() {
     noStroke();
-    strokeWeight(2);
     fill(20, 20, 20, 160);
     rect(this.realPos.x, this.realPos.y, this.width, this.height, 5);
     fill(255, 128, 0, 255);

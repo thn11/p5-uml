@@ -17,13 +17,11 @@ function setup() {
 
 function draw() {
   view.tick();
-  push();
   view.apply();
   background(51);
   grid();
   handler.tick();
   handler.show();
-  pop();
 }
 
 
@@ -34,6 +32,9 @@ function mousePressed(e) {
       view.anchorMouse(mouseX, mouseY);
       view.dragEnabled = true;
     }
+  }
+  if (e.button === 2){
+    handler.addTable(view.worldMouse);
   }
 }
 

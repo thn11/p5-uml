@@ -12,20 +12,20 @@ class View {
   }
 
   apply() {
-    scale(view.zoom);
-    translate(view.pos.x, view.pos.y);
+    scale(this.zoomLevel);
+    translate(this.pos.x, this.pos.y);
   }
 
   unapply() {
-    translate(-view.pos.x, -view.pos.y);
-    scale(-view.zoom);
+    translate(-this.pos.x, -this.pos.y);
+    scale(-this.zoomLevel);
   }
 
 
   anchorMouse() {
     this.mousePos = createVector(
-      mouseX / this.zoom,
-      mouseY / this.zoom
+      mouseX / this.zoomLevel,
+      mouseY / this.zoomLevel
     );
   }
 

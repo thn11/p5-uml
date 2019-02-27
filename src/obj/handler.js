@@ -1,8 +1,12 @@
 class Handler {
   constructor() {
-    this.tables = [new Table(), new Table(), new Table()];
+    this.tables = [new Table(), new Table(), new Table(), new Table(), new Table(), new Table(), new Table(), new Table(), new Table(), new Table(), new Table(), new Table(), new Table()];
     this.dragging = null;
     this.dragOffset = createVector(0,0);
+  }
+
+  addTable(pos) {
+    this.tables = [new Table(pos), ...this.tables];
   }
 
   draggable() {
