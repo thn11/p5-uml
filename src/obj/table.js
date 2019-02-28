@@ -4,8 +4,19 @@ class Table {
   constructor(pos) {
     this.pos = pos === undefined ? createVector(map(random(), 0, 1, 0, width), map(random(), 0, 1, 0, height)) : pos;
     this.realPos = this.pos.copy();
-    this.width = 100;
+    this.width = 130;
     this.height = 150;
+    this.colour = color('hsb(' + round(random(360)) + ', 100%, 80%)');
+    this.columns = [new Column(this.colour), new Column()];
+    const colnum = floor(random(5));
+    for (let i = 0; i < colnum; i++) {
+      this.columns.push(new Column());
+    }
+    this.text = random([
+      "user",
+      "company",
+      "user_settings"
+    ]);
   }
 
   setPos(pos) {
@@ -30,16 +41,21 @@ class Table {
 
   tick() {
     this.realPos.lerp(this.pos, 0.35);
+    this.height = 24 + 30 * this.columns.length + 8;
   }
 
   show() {
     noStroke();
     fill(20, 20, 20, 160);
     rect(this.realPos.x, this.realPos.y, this.width, this.height, 5);
-    fill(255, 128, 0, 255);
+    fill(this.colour);
     rect(this.realPos.x, this.realPos.y, this.width, 24, 5, 5, 0);
     fill(255);
-    text('users', this.realPos.x + 10, this.realPos.y + 5, this.width - 20, 24);
+    text(this.text, this.realPos.x + 10, this.realPos.y + 5, this.width - 20, 24);
+
+    for (let i = 0; i < this.columns.length; i++) {
+      this.columns[i].show(this.realPos.x + 5, this.realPos.y + 30 * (i + 1), this.width - 10);
+    }
   }
 
 }
