@@ -8,6 +8,7 @@ class Table {
     this.height = 150;
     this.colour = color('hsb(' + round(random(360)) + ', 100%, 80%)');
     this.columns = [new Column(this.colour), new Column()];
+    this.dragging = false;
     const colnum = floor(random(5));
     for (let i = 0; i < colnum; i++) {
       this.columns.push(new Column());
@@ -23,13 +24,20 @@ class Table {
     this.pos = createVector(floor(pos.x), floor(pos.y));
   }
 
-  posOver(pos) {
-    if (pos.x <= this.realPos.x + this.width && pos.x >= this.realPos.x) {
-      if (pos.y <= this.realPos.y + this.height && pos.y >= this.realPos.y) {
-        return true;
+  getDraggable(pos) {
+    for (let i = 0; i < this.columns.length; i++){
+      const coldrag = this.columns[i].getDraggable(pos);
+      if (coldrag !== null && coldrag !== undefined){
+        console.log(coldrag);
+        return coldrag;
       }
     }
-    return false;
+    if (pos.x <= this.realPos.x + this.width && pos.x >= this.realPos.x) {
+      if (pos.y <= this.realPos.y + this.height && pos.y >= this.realPos.y) {
+        return this;
+      }
+    }
+    return null;
   }
 
   getOffset(pos) {
@@ -42,6 +50,7 @@ class Table {
   tick() {
     this.realPos.lerp(this.pos, 0.35);
     this.height = 24 + 30 * this.columns.length + 8;
+    this.columns.forEach((c, i) => c.tick(createVector(this.realPos.x + 5, this.realPos.y + 30 * (i + 1)), this.width - 10));
   }
 
   show() {
@@ -53,9 +62,7 @@ class Table {
     fill(255);
     text(this.text, this.realPos.x + 10, this.realPos.y + 5, this.width - 20, 24);
 
-    for (let i = 0; i < this.columns.length; i++) {
-      this.columns[i].show(this.realPos.x + 5, this.realPos.y + 30 * (i + 1), this.width - 10);
-    }
+    this.columns.forEach(c => c.show());
   }
 
 }

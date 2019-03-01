@@ -11,10 +11,12 @@ class Handler {
 
   draggable() {
     for (let i = 0; i < this.tables.length; i++) {
-      if (this.tables[i].posOver(view.worldMouse)) {
-        this.dragging = this.tables[i];
-        this.dragOffset = this.tables[i].getOffset(view.worldMouse);
-        this.tables = [this.dragging, ...this.tables.filter((a, b) => {
+      const draggableObject = this.tables[i].getDraggable(view.worldMouse);
+      if (draggableObject !== null) {
+        this.dragging = draggableObject;
+        draggableObject.dragging = true;
+        if (draggableObject instanceof Table){this.dragOffset = this.tables[i].getOffset(view.worldMouse);}
+        this.tables = [this.tables[i], ...this.tables.filter((a, b) => {
           return b !== i;
         })];
         return true;
@@ -24,6 +26,7 @@ class Handler {
   }
 
   releaseDrag() {
+    this.dragging.dragging = false;
     this.dragging = null;
     this.dragOffset = createVector(0, 0);
   }
