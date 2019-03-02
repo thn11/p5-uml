@@ -14,8 +14,15 @@ class Handler {
       const draggableObject = this.tables[i].getDraggable(view.worldMouse);
       if (draggableObject !== null) {
         this.dragging = draggableObject;
+        console.log({
+          draggableObject,
+          isCol: draggableObject instanceof Column,
+        });
         draggableObject.dragging = true;
-        if (draggableObject instanceof Table){this.dragOffset = this.tables[i].getOffset(view.worldMouse);}
+        if (draggableObject instanceof Table || draggableObject instanceof Column) {
+          console.log("Object is instanceof");
+          this.dragOffset = draggableObject.realPos.copy().sub(view.worldMouse);
+        }
         this.tables = [this.tables[i], ...this.tables.filter((a, b) => {
           return b !== i;
         })];

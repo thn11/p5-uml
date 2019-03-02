@@ -25,9 +25,9 @@ class Table {
   }
 
   getDraggable(pos) {
-    for (let i = 0; i < this.columns.length; i++){
+    for (let i = 0; i < this.columns.length; i++) {
       const coldrag = this.columns[i].getDraggable(pos);
-      if (coldrag !== null && coldrag !== undefined){
+      if (coldrag !== null && coldrag !== undefined) {
         console.log(coldrag);
         return coldrag;
       }
@@ -47,6 +47,21 @@ class Table {
     )
   }
 
+  resort() {
+    const min = this.realPos.y + 20;
+    const max = this.realPos.y + 30 * (this.columns.length) + 10;
+    this.columns.map(c => {
+      if (c.pos.y < min) {
+        c.pos.y = min;
+      } else if (c.pos.y > max) {
+        c.pos.y = max;
+      }
+      return c;
+    });
+    this.columns.sort((a, b) => a.pos.y - b.pos.y);
+  }
+
+
   tick() {
     this.realPos.lerp(this.pos, 0.35);
     this.height = 24 + 30 * this.columns.length + 8;
@@ -54,6 +69,7 @@ class Table {
   }
 
   show() {
+    this.resort();
     noStroke();
     fill(20, 20, 20, 160);
     rect(this.realPos.x, this.realPos.y, this.width, this.height, 5);
@@ -62,7 +78,9 @@ class Table {
     fill(255);
     text(this.text, this.realPos.x + 10, this.realPos.y + 5, this.width - 20, 24);
 
-    this.columns.forEach(c => c.show());
+    this.columns.filter(c => !c.dragging).forEach(c => c.show());
+    const draggingCol = this.columns.find(c => c.dragging);
+    draggingCol !== undefined ? this.columns.find(c => c.dragging).show() : null;
   }
 
 }
