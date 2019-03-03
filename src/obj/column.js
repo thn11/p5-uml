@@ -8,7 +8,8 @@ class Column {
     this.dragObj = {
       pos: createVector(0, 0),
       dragging: false,
-      setPos: pos => this.dragObj.pos = pos
+      setPos: pos => this.dragObj.pos = pos,
+      target: null,
     };
     this.dragging = false;
     this.text = random([
@@ -26,16 +27,14 @@ class Column {
 
   getDraggable(pos) {
     if (pos.dist(createVector(this.pos.x + this.w, this.pos.y + this.h / 2)) < 8) {
-      console.log("Returning dragobj");
+      connecting = true;
       return this.dragObj;
     }
     if (pos.x <= this.pos.x + this.w && pos.x >= this.pos.x) {
       if (pos.y <= this.pos.y + this.h && pos.y >= this.pos.y) {
-        console.log("returning this");
         return this;
       }
     }
-    console.log("Returning null");
     return null;
   }
 
@@ -52,12 +51,81 @@ class Column {
     this.w = w;
   }
 
+
+  PointWithDir(bounds, aDirection) {
+    let e = bounds; // width & height
+    let v = aDirection.normalize(); // direction
+    let y = e.x * v.y / v.x;
+    if (abs(y) < e.y) {
+      const reverse = round(v.x / abs(v.x));
+      return createVector((e.x + 1) * reverse, y * reverse);
+    }
+    const reverse = round(v.y / abs(v.y));
+    return createVector((e.y * v.x / v.y + 1) * reverse, (e.y + 1) * reverse);
+  }
+  PointOnBounds(bounds, aAngle) {
+    const a = aAngle;
+    return this.PointWithDir(bounds, createVector(cos(a), sin(a)));
+  }
+
+  drawDot(x, y, w, h) {
+
+    const rainbow = handler.connectColour;
+    if (view.worldMouse.dist(createVector(x + w, y + h / 2)) < 8) {
+      fill(this.colour.levels[0], this.colour.levels[1], this.colour.levels[2], 70);
+      ellipse(x + w, y + h / 2, 18);
+      fill(this.colour.levels[0], this.colour.levels[1], this.colour.levels[2], 100);
+      ellipse(x + w, y + h / 2, 12);
+    }
+    if (this.dragObj.dragging) {
+      fill(rainbow.levels[0], rainbow.levels[1], rainbow.levels[2], 70);
+      ellipse(x + w, y + h / 2, 18);
+      fill(rainbow.levels[0], rainbow.levels[1], rainbow.levels[2], 100);
+      ellipse(x + w, y + h / 2, 12);
+    }
+    if (this.dragObj.target === null) {
+      // fill(this.dragObj.dragging ? rainbow : this.colour);
+      fill(200);
+      ellipse(x + w, y + h / 2, 6);
+    }
+    if (this.dragObj.dragging) {
+      stroke(rainbow);
+      strokeWeight(2);
+      line(x + w, y + h / 2, this.dragObj.pos.x, this.dragObj.pos.y);
+      noStroke();
+      fill(rainbow);
+      ellipse(x + w, y + h / 2, 6);
+    }
+    if (this.dragObj.target !== null && !this.dragObj.dragging) {
+      fill(this.dragObj.target.colour);
+      ellipse(x + w, y + h / 2, 8);
+      noFill();
+      strokeWeight(3);
+      stroke(this.dragObj.target.colour);
+      const {
+        target
+      } = this.dragObj;
+      const targetCentre = createVector(
+        target.realPos.x + target.width / 2,
+        target.realPos.y + target.height / 2
+      );
+      const fromPos = createVector(x + w, y + h / 2);
+      const angle = targetCentre.copy().sub(fromPos).heading();
+      const testTarget = targetCentre.copy()
+        .sub(this.PointOnBounds(createVector(target.width / 2, target.height / 2), angle));
+      const targetPos = createVector(
+        targetCentre.x - tan(angle),
+        targetCentre.y - tan(angle)
+      );
+      line(fromPos.x, fromPos.y, testTarget.x, testTarget.y);
+    }
+  }
+
   show() {
     const x = this.pos.x;
     const y = this.pos.y;
     const w = this.w;
     const h = this.h;
-    const rainbow = color('hsb(' + (frameCount * 2) % 360 + ', 100%, 100%)');
 
     strokeWeight(1);
     stroke(this.colour);
@@ -73,24 +141,6 @@ class Column {
     noStroke();
     fill(255);
     text(this.text, x + 7, y + 5, w - 12, h);
-    if (view.worldMouse.dist(createVector(x + w, y + h / 2)) < 8) {
-      fill(this.colour.levels[0], this.colour.levels[1], this.colour.levels[2], 70);
-      ellipse(x + w, y + h / 2, 18);
-      fill(this.colour.levels[0], this.colour.levels[1], this.colour.levels[2], 100);
-      ellipse(x + w, y + h / 2, 12);
-    }
-    if (this.dragObj.dragging) {
-      fill(rainbow.levels[0], rainbow.levels[1], rainbow.levels[2], 70);
-      ellipse(x + w, y + h / 2, 18);
-      fill(rainbow.levels[0], rainbow.levels[1], rainbow.levels[2], 100);
-      ellipse(x + w, y + h / 2, 12);
-    }
-    fill(this.dragObj.dragging ? rainbow : this.colour);
-    ellipse(x + w, y + h / 2, 6);
-    if (this.dragObj.dragging) {
-      stroke(rainbow);
-      strokeWeight(2);
-      line(x + w, y + h / 2, this.dragObj.pos.x, this.dragObj.pos.y);
-    }
+    this.drawDot(x, y, w, h);
   }
 }

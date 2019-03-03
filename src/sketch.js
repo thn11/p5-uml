@@ -2,6 +2,7 @@ let canvas;
 let view;
 let handler;
 let font;
+let connecting = false;
 
 function preload() {
   font = loadFont('../assets/NotoMono-Regular.ttf');
@@ -33,7 +34,7 @@ function mousePressed(e) {
       view.dragEnabled = true;
     }
   }
-  if (e.button === 2){
+  if (e.button === 2) {
     handler.addTable(view.worldMouse);
   }
 }
