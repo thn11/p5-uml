@@ -21,12 +21,12 @@
 
         "no-comma-dangle": 0,         // disallow trailing commas in object literals
         "no-cond-assign": 0,          // disallow assignment in conditional expressions
-        "no-console": 0,              // disallow use of console (off by default in the node environment)
+        "no-console": 1,              // disallow use of console (off by default in the node environment)
         "no-constant-condition": 0,   // disallow use of constant expressions in conditions
         "no-control-regex": 0,        // disallow control characters in regular expressions
         "no-debugger": 0,             // disallow use of debugger
         "no-dupe-keys": 0,            // disallow duplicate keys when creating object literals
-        "no-empty": 0,                // disallow empty statements
+        "no-empty": 1,                // disallow empty statements
         "no-empty-class": 0,          // disallow the use of empty character classes in regular expressions
         "no-ex-assign": 0,            // disallow assigning to the exception in a catch block
         "no-extra-boolean-cast": 0,   // disallow double-negation boolean casts in a boolean context
@@ -52,10 +52,10 @@
         "block-scoped-var": 0,      // treat var statements as if they were block scoped (off by default)
         "complexity": 0,            // specify the maximum cyclomatic complexity allowed in a program (off by default)
         "consistent-return": 0,     // require return statements to either always or never specify values
-        "curly": 0,                 // specify curly brace conventions for all control statements
-        "default-case": 0,          // require default case in switch statements (off by default)
-        "dot-notation": 0,          // encourages use of dot notation whenever possible
-        "eqeqeq": 0,                // require the use of === and !==
+        "curly": 1,                 // specify curly brace conventions for all control statements
+        "default-case": 1,          // require default case in switch statements (off by default)
+        "dot-notation": 1,          // encourages use of dot notation whenever possible
+        "eqeqeq": 1,                // require the use of === and !==
         "guard-for-in": 0,          // make sure for-in loops have an if statement (off by default)
         "no-alert": 0,              // disallow the use of alert, confirm, and prompt
         "no-caller": 0,             // disallow use of arguments.caller or arguments.callee
@@ -63,16 +63,16 @@
         "no-else-return": 0,        // disallow else after a return in an if (off by default)
         "no-empty-label": 0,        // disallow use of labels for anything other then loops and switches
         "no-eq-null": 0,            // disallow comparisons to null without a type-checking operator (off by default)
-        "no-eval": 0,               // disallow use of eval()
-        "no-extend-native": 0,      // disallow adding to native types
+        "no-eval": 1,               // disallow use of eval()
+        "no-extend-native": 2,      // disallow adding to native types
         "no-extra-bind": 0,         // disallow unnecessary function binding
         "no-fallthrough": 0,        // disallow fallthrough of case statements
         "no-floating-decimal": 0,   // disallow the use of leading or trailing decimal points in numeric literals (off by default)
-        "no-implied-eval": 0,       // disallow use of eval()-like methods
-        "no-iterator": 0,           // disallow usage of __iterator__ property
+        "no-implied-eval": 1,       // disallow use of eval()-like methods
+        "no-iterator": 1,           // disallow usage of __iterator__ property
         "no-labels": 0,             // disallow use of labeled statements
-        "no-lone-blocks": 0,        // disallow unnecessary nested blocks
-        "no-loop-func": 0,          // disallow creation of functions within loops
+        "no-lone-blocks": 1,        // disallow unnecessary nested blocks
+        "no-loop-func": 1,          // disallow creation of functions within loops
         "no-multi-spaces": 0,       // disallow use of multiple spaces
         "no-multi-str": 0,          // disallow use of multiline strings
         "no-native-reassign": 0,    // disallow reassignments of native objects
