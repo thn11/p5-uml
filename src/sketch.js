@@ -5,7 +5,7 @@ let font;
 let connecting = false;
 
 function preload() {
-  font = loadFont(SITE_URL + '/assets/NotoMono-Regular.ttf');
+  font = loadFont('assets/NotoMono-Regular.ttf');
 }
 
 function setup() {
